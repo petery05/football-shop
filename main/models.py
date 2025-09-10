@@ -3,12 +3,12 @@ from django.db import models
 
 class Shop(models.Model):
     CATEGORY_CHOICES = [
-        ('transfer', 'Transfer'),
-        ('update', 'Update'),
+        ('bag', 'BAG'),
+        ('jersey', 'JERSEY'),
         ('exclusive', 'Exclusive'),
-        ('match', 'Match'),
-        ('rumor', 'Rumor'),
-        ('analysis', 'Analysis'),
+        ('boots', 'Boots'),
+        ('accessories', 'Accessories'),
+        ('hoodie', 'Hoodie'),
     ]
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
