@@ -1,3 +1,5 @@
+##**TUGAS INDIVIDU 2**
+
 **Penjelasan checklist**
 1) membuat projek django baru:
 - sebelum memulai, saya membuat folder baru dan membuat virtual env baru disana agar mencegah terjadinya konflik isolasi dependency. pembuatan env dapat dilakukan dengan menjalankan kode python python env {nama envnya}
