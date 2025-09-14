@@ -26,6 +26,7 @@ class Shop(models.Model):
         return self.name
     
     @property
-    def dummy(self):
-        return
-        
+    def is_product_hot(self):
+        return self.total_purcased > 10
+    
+    
