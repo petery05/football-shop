@@ -1,4 +1,4 @@
-##**TUGAS INDIVIDU 2**
+<h1>**TUGAS INDIVIDU 2**</h1>
 
 **Penjelasan checklist**
 1) membuat projek django baru:
@@ -85,7 +85,7 @@ source: https://www.youtube.com/watch?v=aOLrEkpGWDg
 **Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?**
 - menurut saya, penjelasan yang diberikan masih kurang baik. Maksud saya adalah penjelasan yang diberikan hanya memfokuskan pada kode yang ditulis saja. Karena tutorial masih lebih cepat dari pembelajaran dikelas maka saya merasa agak kebinggungan dengan penjelasan perkode saja bukan secara garis besar kenapa kita memerlukan menulis kode/berkas file tersebut dan apa kaitannya dengan apa yang mau kita buat.
 
-##**TUGAS INDIVIDU 3**
+<h1>**TUGAS INDIVIDU 3**</h1>
 
 **Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?**
 - data delivery adalah jantung dari sebuah app yang hampir pasti diperlukan ketika kita membuat sebuah app. sekadar membuat app kita online agar bisa dipakai orang lain saja memerlukan data delivery dari sebuah browser user ke server dan dari server ke user. selain itu, keuntungan dari data delivery juga macam-macam seperti memastikan keakurasian data, mendeteksi error, memvalidasi data, dan akses data yang realtime. contoh kasus nyatanya adalah ketika kita memakai ojek online. bagaimana jika lokasi dari driver ternyata tidak presisi ? bayangkan lokasi driver bisa tiba tiba pindah pindah dari bali ke bandung lalu ke bogor maka user akan kebinggungan. menurut saya sendiri, ini tergantung dengan app yang ingin kita buat. misal jika kita membuat web portfolio. pertanyaannya apakah priority data delivery ini tinggi ? menurut saya sekedar hanya menampikan data yang statis tidak begitu penting. namun data delivery tetap pasti dipakai.
@@ -135,7 +135,7 @@ source: https://www.youtube.com/watch?v=aOLrEkpGWDg
 2) lalu jangan lupa impor fungsi ini ke urls.py dan juga tambahkan url baru yang memiliki pattern product/[id_product]. path ini akan memanggil fungsi show_news.
 3) kita buat file news_detail.html pada direktori main/templates. lalu kita akan buat html ini akan mengextend base.html. 
 4) didalam file html itu akan kita buat anchor yang akan mendirect user ke home page dan membungkus sebuah tombol. tombol ini nanti akan digunakan sebagai tombol back. 
-5) lalu kita akan buat <h1> yang berisi nama dari produk kita dan juga <p> yang berisi detail detail lainnya (harga, brand, rating, foto,dll)
+5) lalu kita akan buat (h1) yang berisi nama dari produk kita dan juga <p> yang berisi detail detail lainnya (harga, brand, rating, foto,dll)
 
 **Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?**
 - tidak ada, menurut saya dalam tutorial ini sudah jelas.
