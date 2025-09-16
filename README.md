@@ -84,3 +84,64 @@ source: https://www.youtube.com/watch?v=aOLrEkpGWDg
 
 **Apakah ada feedback untuk asisten dosen tutorial 1 yang telah kamu kerjakan sebelumnya?**
 - menurut saya, penjelasan yang diberikan masih kurang baik. Maksud saya adalah penjelasan yang diberikan hanya memfokuskan pada kode yang ditulis saja. Karena tutorial masih lebih cepat dari pembelajaran dikelas maka saya merasa agak kebinggungan dengan penjelasan perkode saja bukan secara garis besar kenapa kita memerlukan menulis kode/berkas file tersebut dan apa kaitannya dengan apa yang mau kita buat.
+
+##**TUGAS INDIVIDU 3**
+
+**Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?**
+- data delivery adalah jantung dari sebuah app yang hampir pasti diperlukan ketika kita membuat sebuah app. sekadar membuat app kita online agar bisa dipakai orang lain saja memerlukan data delivery dari sebuah browser user ke server dan dari server ke user. selain itu, keuntungan dari data delivery juga macam-macam seperti memastikan keakurasian data, mendeteksi error, memvalidasi data, dan akses data yang realtime. contoh kasus nyatanya adalah ketika kita memakai ojek online. bagaimana jika lokasi dari driver ternyata tidak presisi ? bayangkan lokasi driver bisa tiba tiba pindah pindah dari bali ke bandung lalu ke bogor maka user akan kebinggungan. menurut saya sendiri, ini tergantung dengan app yang ingin kita buat. misal jika kita membuat web portfolio. pertanyaannya apakah priority data delivery ini tinggi ? menurut saya sekedar hanya menampikan data yang statis tidak begitu penting. namun data delivery tetap pasti dipakai.
+
+**Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?**
+- JSON, karena menurut saya json lebih mudah dibaca dan dipahami dibanding xml, misal kita memiliki 3 student dan memiliki data nama dan NPMnya. xml akan memerlukan menulis <student> dan </student> sebanyak 3 kali sedangkan JSON hanya menuliskan sekali. karena JSON mirip dengan key dan value dalam dictionary python juga merupakan salah satu alasan kenapa saya lebih menyukai JSON. selain dari opini pribadi, JSON juga memiliki keunggulan universal yang pasti dirasakan oleh semua orang yaitu adalah fakta bahwa JSON bisa di parsed (proses pemecahan data mentah) lebih mudah daripada XML. XML harus di parsed dengan XML parser sedangkan JSON bisa di parsed dengan standard JavaScript. lalu keunggulan JSON lainnya adalah JSON lebih pendek, lebih cepat untuk di read dan write, dan juga JSON bisa menggunakan arrays.
+
+**Jelaskan fungsi dari method is_valid() pada form Django dan mengapa kita membutuhkan method tersebut?**
+- fungsi dari method is_valid() adalah menentukan apakah field dari form yang dipakai sudah valid atau belum seperti apakah field yang harus diiisi kosong atau tidak, apakah tipe data yang dimasukkan sudah sesuai, apakah panjang maksimum/minimum terpenuhi dan lainnya. bahkan is_valid ini juga bisa custom dengan standar valid kita. Tentunya is_valid() dibutuhkan untuk menentukan apakah data yang diterima atau yang ingin diberikan sudah valid atau belum, menjaga konsistenm dan juga aman untuk digunakan nantinya . fungsi ini juga secara tidak langsung memberikan info apakah terdapat error dalam field kita sehingga dapat digunakan sebagai mini test dalam app kita.
+
+**Mengapa kita membutuhkan csrf_token saat membuat form di Django? Apa yang dapat terjadi jika kita tidak menambahkan csrf_token pada form Django? Bagaimana hal tersebut dapat dimanfaatkan oleh penyerang?**
+- kita membutuhkan csrf_token saat membuat form di django agar django dapat melindungi data kita terhadap serangan csrf. Jika kita tidak menambahkan csrf_token, maka seseorang dapat dengan mudah memanipulasi data kita. ketika kita membuka website yang berbahaya atau mencurigakan, penyerang dapat mengirim form yang berisi request ke website yang sudah terauntetikasi pada kita. misal saya sedang membuka web tentang kucing dan ternyata web tersebut adalah web berbahaya. web itu langsung mengirim form berupa request menganti password akun sosial media saya. karena saya pernah login pada sosial media saya maka browser akan secara otomatis memberikan cookie autentikasi pada setiap request yang ingin saya lakukan. Jika web sosial media saya tidak memiliki perlindungan csrf, maka penyerang dapat dengan mudah mencuri akun media sosial saya karena web sosial media saya tidak dapat membedakan siapa yang sedang mengirim request tersebut.
+
+**Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).**
+- menambahkan 4 fungsi views
+1) dalam file views.py, saya mengimport serializers dan HttpResponse. serializers digunakan untuk mengubah query set menjadi data yang kita ingin (xml dan json). lalu HttpResponse digunakan untuk mengembalikan respons web ke user.
+2) membuat fungsi baru bernama show_xml dan show_json. kedua fungsi tersebut akan menerima parameter request. jadi ketika user membuka url tertentu maka fungsi akan jalan. 
+3) nah pertama tama untuk menampilkan data jsonnya pasti kita perlu menarik semua data produk yang ada. maka dari itu kita tambahkan code `product_list = Shop.objects.all()` dan menyimpannya dalam variabel product_list. 
+4) karena data yang sudah kita ambil tadi masih berupa query set, maka kita akan ubah menjadi xml/json dengan cara memberikan code berikut `xml_data = serializers.serialize("xml", product_list)` dan `json_data = serializers.serialize("xml", product_list)`.
+5) sekarang kita sudah mempunyai data xml/json nya maka selanjutnya kita akan mengembalikan nilainya berupa respons dari web dengan HttpResponse dengan cara menuliskan kode `return HttpResponse(xml_data, content_type="application/xml")` atau `return HttpResponse(json_data, content_type="application/json")`. kita memanggil fungsi HttpResponse dan memberikan parameter data xml/json yang sudah ada dan menjelaskan kepada fungsi ini bahwa yang kita berikan adalah content berupa xml dan json.
+6) selanjutnya kita akan buat versi yang show by id. pertama-tama kita balik lagi ke views.py dan mendefinisikan kedua fungsinya terlebih dahulu dimana fungsinya nanti akan menerima 2 parameter yaitu request dan juga product_id.
+7) kita akan menarik produk dengan kode id sesuai yang diminta. maka gunakan .filter(pk=product_id). perlu kita antisipasi juga bahwa bisa jadi product nya tidak exist sehingga akan mengeluarkan error product DoesNotExist. maka penarikan produk akan kita bungkus dengan try except. ketika sudah ditarik produknya maka kita akan mengubahnya lagi ke tipe data yang kita inginkan (xml/json) dengan cara menggunakan fungsi serializers sama seperti step sebelumnya.
+8) setelah menlakukan serialize, maka kita akan mereturn nilainya dalam rupa respons Http dengan fungsi HttpResponse sama seperti step sebelumnya
+9) jika terjadi exception Shop.DoesNotExist (data produk dengan id yang dituju tidak ada) maka kita akan mereturn HttpResponse dengan status 404 yang memiliki arti not found.
+
+- Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 1
+1) selanjutnya kita akan aplikasikan dengan cara pergi ke urls.py dan tambahkan import nama fungsi yang sudah kita buat tadi.
+2) lalu kita akan pergi ke urlpatterns untuk mendefinisikan url baru yang dapat diakses. akan kita masukkan kode `path('xml/', show_xml, name='show_xml'),`, `path('json/', show_json, name='show_json'),`, `path('xml/<str:product_id>', show_xml_by_id, name='show_xml_by_id')`,`path('json/<str:product_id>', show_json_by_id, name='show_json_by_id'),`  sehingga ketika user membuka path url xml/ dan json/ atau xml/[product_id] dan json/[product_id] maka akan mengaktifkan fungsi views yang tadi sudah kita buat.
+
+- Membuat halaman yang menampilkan data objek model yang memiliki tombol "Add" yang akan redirect ke halaman form, serta tombol "Detail" pada setiap data objek model yang akan menampilkan halaman detail objek.
+1) setelah membuat skeleton untuk html(base.html), saya mengubah main.html dan membuat main.html mengextend base.html jadi main akan selalu berada pada body dari suatu html.
+2) dalam views.py kita akan menambahkan context yang ada. kita tambahkan semua produk-produk yang ada dalam database kita. caranya dengan memanggil semua objek yang ada dengan kode `product_list = Shop.objects.all()`. lalu tambahkan product list ke dalam context
+3) dalam main.html, kita akan membuat anchor tag (<a>) dan beri href nilai `{% url 'main:create_product' %}` lalu anchor ini akan membungkus sebuah button dengan title Add Product. nilai dari href itu adalah path untuk mendirect user ke path create_product yang nanti akan memanggil fungsi create_product dalam views.py
+4) lalu kita akan membuat if statement dimana jika dalam database tidak ada produk maka halaman akan menampilkan paragraf html yang bernilai "Belum ada data Produk pada We Ball Shop". dan jika ada maka akan melalukan for loop terhadap semua produk yang ada dimana setiap perulangan kita akan membuat suatu kotak (div) yang isinya ada isi-isi beserta detail produk (nama produk, harga, brand,dll). selain itu akan ada button detail juga yang dimana cara membuatnya sama dengan membuat tombol create product (tombol dibungkus anchor dengan href {% url 'main:show_product' product.id %})
+
+- Membuat halaman form untuk menambahkan objek model pada app sebelumnya.
+1) buat file forms.py dalam direktori main
+2) import ModelForm dan Shop
+3) buat class ProductForm dengan parameter ModelForm dan didalam class itu akan kita buat class bernama Meta yang isinya terdapat atribut bernama model yang merupakan Shop itu sendiri. dan atribut fields yang isinya adalah isi dari apa saja yang perlu diinput user ketika mau membuat sebuah product seperti nama barang, harga, brand, dll (field harus dari model).
+4) dalam direktori templates pada main, kita akan buat file html baru bernama create_product. dalamnya kita akan definisikan dulu bahwa html ini akan mengextend base.html. lalu kita akan mendefinisikan bahwa form ini akan melakukan request berupa POST dengan cara menambahkan <form method="POST">. lalu ini akan membungkus {% csrf_token %}, template tag (form.as_table), dan <td>.
+6) buat fungsi create_product yang akan menerima request dan akan mengembalikan create_product.html
+5) tambahkan path create-product pada urlpatterns dalam urls.py yang nanti akan memanggil fungsi create_product pada views.py
+6) terakhir tambahkan kode `CSRF_TRUSTED_ORIGINS = ["<url-deployment-pws>"]`pada settings.py untuk memberi tahu bahwa url pws saya aman untuk melakukan request
+
+- Membuat halaman yang menampilkan detail dari setiap data objek model.
+1) buat fungsi pada views.py bernama show_news yang menerima paramameter request dan product_id. fungsi ini nantinya akan mengembalikan render yang berisi product_detail.html dan context data yang sudah difilter dari semua data product.
+2) lalu jangan lupa impor fungsi ini ke urls.py dan juga tambahkan url baru yang memiliki pattern product/[id_product]. path ini akan memanggil fungsi show_news.
+3) kita buat file news_detail.html pada direktori main/templates. lalu kita akan buat html ini akan mengextend base.html. 
+4) didalam file html itu akan kita buat anchor yang akan mendirect user ke home page dan membungkus sebuah tombol. tombol ini nanti akan digunakan sebagai tombol back. 
+5) lalu kita akan buat <h1> yang berisi nama dari produk kita dan juga <p> yang berisi detail detail lainnya (harga, brand, rating, foto,dll)
+
+**Apakah ada feedback untuk asdos di tutorial 2 yang sudah kalian kerjakan?**
+- tidak ada, menurut saya dalam tutorial ini sudah jelas.
+
+**Mengakses keempat URL di poin 2 menggunakan Postman, membuat screenshot dari hasil akses URL pada Postman, dan menambahkannya ke dalam README.md.**
+- ![xml](image-2.png)
+![json](image-3.png)
+![jsonById](image-4.png)
+![xmlById](image-5.png)
