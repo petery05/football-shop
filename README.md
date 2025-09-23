@@ -145,3 +145,93 @@ source: https://www.youtube.com/watch?v=aOLrEkpGWDg
 ![json](image-3.png)
 ![jsonById](image-4.png)
 ![xmlById](image-5.png)
+
+
+<h1>**TUGAS INDIVIDU 4**</h1>
+
+**Apa itu Django AuthenticationForm? Jelaskan juga kelebihan dan kekurangannya.**
+- Django AuthenticationForm adalah form bawaan dari django untuk login jadi tidak perlu buat manual lagi. 
+Kelebihannya adalah:
+a) tinggal "plug and play" (built in). tinggal dipakai aja dan tidak perlu buat manual
+b) fleksibel. bisa override error messages, bisa nambah field, dll.
+c) terintegrasi dengan django langsung jadi lebih simpel.
+
+Kekurangannya adalah:
+a) karena simpel maka kurang cocok untuk aplikasi yang membutuhkan keamanan yang lebih tinggi atau kompleks (tidak mendukung security lanjutan yang lebih modern seperti captcha)
+b) kurang fleksibel untuk UI/UX modern karena login via google atau yang lain biasanya tidak disupport oleh AuthenticationForm (secara default hanya berupa username dan password)
+
+**Apa perbedaan antara autentikasi dan otorisasi? Bagaiamana Django mengimplementasikan kedua konsep tersebut?**
+- Autentikasi adalah proses membuktikan diri bahwa anda adalah orang yang anda definisikan. sedangkan otorisasi adalah proses memberikan izin pada orang yang sudah melakukan autentikasi ketika ia ingin melakukan sesuatu. Dalam django, autentikasi dipakai untuk mengecek apakah user ini merupakan pemilik akun yang memiliki username xxx dengan cara mengecek password yang diinput user. Otorisasi dalam django dilain sisi menilai apakah user dengan akun xxx memiliki hak akses untuk melakukan ini ? misal dalam scele, terdapat role mahasiswa dan dosen. role mahasiswa tentunya tidak dapat mengubah isi dari scele sedangkan dosen bisa.
+
+**Apa saja kelebihan dan kekurangan session dan cookies dalam konteks menyimpan state di aplikasi web?**
+*Session*
+Kelebihan:
+- lebih aman karena data penting disimpan di server jadi orang tidak bisa lihat
+- bisa menyimpan data yang besar karena disimpannya di server
+Kekurangan:
+- lebih lemot dari cookie karena tiap request harus diproses oleh server dulu
+- expired otomatis kalau sudah lama tidak dipakai
+- ketika sessionnya expired atau server restart, data dalam session hilang semua kecuali sudah disimpan di database
+
+*Cookie*
+Kelebihan:
+- lebih cepat karena data disimpan di lokal
+- expire bisa diset secara manual
+- data masih ada bahkan ketika browsernya sudah ditutup kecuali expired.
+
+Kekurangan:
+- tidak bisa menyimpan data besar (terbatas hanya 4KB)
+- kurang aman karena bisa kelihatan di client
+
+**Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai? Bagaimana Django menangani hal tersebut?**
+- tidak terlalu aman juga. Karena cookies bisa dilihat maka rawan bisa diintip atau dicuri jika cookie tidak di secure. Selain itu, cookie juga bisa dimanipulasi karena lokasinya ada di lokal dan jika developer app tidak berhati - hati memasukkan data yang penting, maka bisa berakibat fatal. misal awalnya role: mahasiswa menjadi role:dosen pada scele. untuk mencegah cookies rawan diintip atau dicuri, django memiliki HttpOnly flag untuk mencegah javascript membaca cookie sehingga tidak bisa dicuri session ID nya. seSlain itu, django juga tidak menyimpan data yang krusial pada cookie. Data yang disimpan biasanya hanyalah session ID acak yang tidak bermakna
+
+**Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial).**
+- Mengimplementasikan fungsi registrasi, login, dan logout untuk memungkinkan pengguna mengakses aplikasi sebelumnya sesuai dengan status login/logoutnya.
+1) pertama kita akan mengedit views.py. dalam views.py, kita akan mengimpor UserCreationForm dan messages. UserCreationForm berfungsi untuk membuat form register sehingga developer tidak perlu membuat kode dari awal. Sedangkan messages berfungsi sebagai mengirim pesan kepada user
+2) lalu kita akan mendefinisikan fungsi baru bernama register yang menerima parameter request. didalamnya, kita akan mendefinisikan form yang kita buat menggunakan UserCreationForm. jika request dalam bentuk POST maka kita akan membuat UserCreationForm yang berisi parameter request.POST. kalau bukan maka akan merender ke register lagi. melanjutkan jika request.method == POST, kita cek lagi setelah membuat UserCreationForm apakah formnya valid. jika iya maka akan menyimpan formnya, memberi messages bahwa akunnya sudah berhasil lalu meredirect ke halaman login
+3) dalam main/templates, kita akan membuat html baru bernama register.
+didalamnya kita akan mendefinisikan bahwa html ini akan mengextend skeleton kita yaitu base.html. selain itu, didalamnya kita akan menyisipkan title Register, form yang dilengkapi dengan csrf token, dan menampilkan messages yang sudah dikirim
+4) terakhir kita import fungsi registernya ke urls.py dan buat path baru 'register/' yang nanti akan memanggil fungsi register ketika user ingin membuka url tersebut
+5) lanjut untuk membuat fungsi login, kita balik lagi ke views.py dan akan kita impor AuthenticationForm, authenticate, dan login. AuthenticationForm digunakan untuk mempermudah pekerjaan untuk membuat form. dengan import ini, kita tidak perlu membuat form untuk autentikasi lagi secara manual. authenticate digunakan sebagai pengecek apakah username dan username sudah sesuai. Sedangkan login digunakan untuk membuat session login setelah taham autentikasi selesai
+6) kita buat function baru bernama login_user yang menerima parameter request. didalam function tersebut, kita akan cek apakah request yang diterima berupa POST atau bukan. jika iya maka akan membuat AuthenticationForm dengan parameter request.POST sedangkan kalau tidak maka akan membuat AuthenticationForm dengan parameter request saja.
+melanjutkan jika metode POST, akan dicek juga apakah formnya sudah valid. jika iya maka akan kita ambil usernya dan buat session dengan login(request, user) lalu akan kita return berupa redirect ke home page (main:show_main)
+diluar if else pertama, kita akhiri dengan context = {'form': form} dan return berupa render yang menampilkan menu login lagi.
+7) buat file html baru bernama login.html pada main/templates. didalamnya, kita akan definisikan skeleton dan tambahkan h1 yang berisi Login. lalu kita akan tampilkan formnya dan jangan lupa generate csrf token. dalam page login, kita akan tampilkan messages dan juga tombol yang meredirect user ke register jika user belum memiliki akun
+8) terakhir tambahkan ke urls.py dengan nama login/ dan akan menjalankan fungsi login_user. sama seperti step sebelumnya pada menambahkan urls register.
+9) sekarang kita pindah ke fungsi logout. dalam views.py kita impor logout. yang berfungsi menghapus session pengguna.
+10) definisikan fungsi baru bernama logout_user yang menerima parameter request. lalu didalamnya kita akan panggil function logout yang tadi sudah diimport lalu berikan parameter request di dalamnya. terakhir akan kita redirect ke halaman login
+11) tambahkan funtionnya pada urls.py dan berikan nama logout/. step masih sama dengan yang sebelumnya
+12) tambahkan juga tombol untuk logout pada main.html. tombol akan meredirect ke main:logout
+
+
+- Membuat dua (2) akun pengguna dengan masing-masing tiga (3) dummy data menggunakan model yang telah dibuat sebelumnya untuk setiap akun di lokal.
+1) membuat akun seperti biasa yang memenuhi semua persyaratan. lalu buat 3 barang yang ingin dibuat bebas. 
+2) lakukan hal yang sama untuk akun kedua
+
+- Menghubungkan model Product dengan User.
+1) pada models.py akan kita impor User. User adalah class bawaan dari django untuk mempermudah developer agar tidak perlu membuat manual lagi.
+2) kita akan buat atribut user pada class Product kita dan nilainya adalah `models.ForeignKey(User, on_delete=models.CASCADE, null=True)`. ForeignKey adalah salah satu field relasi. ForeignKey sendiri memiliki sifat relasi many to one. jadi banyak product ke 1 user saja. on_delete = models.CASCADE memiliki arti ketika user tersebut hilang maka product productnya juga akan hilang. null = True sendiri memiliki arti user yang kosong itu boleh.
+3) buat migration pada manage.py lalu migrate
+4) pada views.py, kita akan mengubah fungsi create_news. pertama kita akan mengewrap fungsi ini dengan login_required yang memiliki login_url='login/'. lalu form.save() akan kita ganti menjadi:
+`news_entry = form.save(commit = False)`
+`news_entry.user = request.user`
+`news_entry.save()`
+
+kita tambahkan commit=False agar django tidak langsung menyimpan objek hasil form ke database untuk kita bisa modifikasi dulu objeknya sebelum disimpan. lalu kita ganti entry.usernya dengan request.user agar field entry.user dapat terisi (tidak kosong) oleh user yang sedang login.
+
+6) pada function show_main, kita tambahkan juga wrapper login_required.Lalu pada pendefinisian news_list, kita ganti dengan `filter_type = request.GET.get("filter", "all")` ini berfungsi sebagai mendefinisikan bahwa request GET akan dilakukan pada semua akun sebagai defaultnya.
+7) lalu kita buatkan jika filter_typenya == "all" maka akan news_list nya ambil semua (seperti sebelumnya) sedangkan kalau tidak maka akan mengambil news_list yang sudah di filter dengan .fiter(user=request.user)
+8) jangan lupa tambahkan pada main.html 2 tombol yang akan mengeset kapan filternya bernilai all dan kapan bernilai my
+
+- Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last_login pada halaman utama aplikasi.
+1) buka views.py lalu impor datetime, HttpResponseRedirect, dan reverse.
+datetime digunakan untuk mengambil waktu sekarang. HttpResponseRedirect memiliki fungsi yang sama seperti redirect namun memiliki kontrol penuh ke response object. reverse digunakan untuk mencari URL dari view.
+2) pada function login_user, akan kita ubah semua yang ada dibawah login(request, user) dengan:
+`response = HttpResponseRedirect(reverse("main:show_main"))`
+`response.set_cookie('last_login', str(datetime.datetime.now()))`
+`return response`
+kita akan membuat variabel bernama response yang mendirect ke page yang memiliki url yang memanggil fungsi show_main. lalu dalam page itu akan diset cookienya yang memiliki data key last_login dan valuenya tanggal.
+3) pada show_main, kita tambahkan context baru last_login yang berisi data dari cookies. data ini memiliki default Never. penambahan baru pada context menghasilkan bisanya kita tampikan pada html
+4) pada main.html, kita tambahkan h5 yang memberi info sesi terakhir login kita (last_login pada context tadi)
+5) pada function logout_user juga akan kita tambahkan response berisi redirect ke url yang memiliki views Login. lalu kita delete cookienya yang bernilai last_login. lalu terakhir kita ganti nilai returnnya menjadi response
