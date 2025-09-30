@@ -121,12 +121,11 @@ def edit_product(request,id):
         return redirect('main:show_main')
     
     context={
-        form:'form'
+        "form": form
     }
     return render(request, "edit_product.html", context)
 
-def delete_product(request,id):
+def delete_product(request, id):
     product = get_object_or_404(Product, pk=id)
     product.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
-
