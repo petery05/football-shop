@@ -16,5 +16,5 @@ urlpatterns = [
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
     path('product/<str:id>/edit', edit_product, name='edit_product'),
-    path('product/<str:id>/delete', delete_product, name='delete_prodoct'),
+    path('product/<str:id>/delete', delete_product, name='delete_product'),
 ]
