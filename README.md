@@ -236,3 +236,8 @@ kita akan membuat variabel bernama response yang mendirect ke page yang memiliki
 3) pada show_main, kita tambahkan context baru last_login yang berisi data dari cookies. data ini memiliki default Never. penambahan baru pada context menghasilkan bisanya kita tampikan pada html
 4) pada main.html, kita tambahkan h5 yang memberi info sesi terakhir login kita (last_login pada context tadi)
 5) pada function logout_user juga akan kita tambahkan response berisi redirect ke url yang memiliki views Login. lalu kita delete cookienya yang bernilai last_login. lalu terakhir kita ganti nilai returnnya menjadi response
+
+<h1>**TUGAS INDIVIDU 5**</h1>
+**Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!.**
+- 
+
