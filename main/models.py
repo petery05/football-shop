@@ -24,7 +24,7 @@ class Product(models.Model):
     rating = models.DecimalField(max_digits=2, default=0, decimal_places=1)
     total_purcased = models.PositiveIntegerField(default=0)
     brand = models.CharField(max_length=100)
-
+    sale = models.IntegerField(default=0)
 
 
     def __str__(self):
@@ -34,4 +34,6 @@ class Product(models.Model):
     def is_product_hot(self):
         return self.total_purcased > 10
     
-    
+    @property
+    def after_discount(self):
+        return self.price - (self.price*self.sale//100)

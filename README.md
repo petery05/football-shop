@@ -237,7 +237,41 @@ kita akan membuat variabel bernama response yang mendirect ke page yang memiliki
 4) pada main.html, kita tambahkan h5 yang memberi info sesi terakhir login kita (last_login pada context tadi)
 5) pada function logout_user juga akan kita tambahkan response berisi redirect ke url yang memiliki views Login. lalu kita delete cookienya yang bernilai last_login. lalu terakhir kita ganti nilai returnnya menjadi response
 
-<h1>**TUGAS INDIVIDU 5**</h1>
-**Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!.**
-- 
+# **TUGAS INDIVIDU 5**
+**Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!**
+- ada inline css, external css, dan internal style sheets. prioritas pertama berada pada inline css lalu diikuti external css dan internal style sheets (external css dan internal style sheets memiliki tingkat prioritas yang sama) lalu browser default.
+inline css adalah css yang ditaruh disamping objeknya. misal {a style=color:black} {} adalah <>. external css adalah css yang ditaruh pada folder lain. dalam bentuk file .css biasanya. dan ketika ingin diterapkan, beri kode berikut pada head html: 
+`<link rel="stylesheet" href="{% static 'path ke file .css' %}"/>`. dengan begitu, html akan menggunakan css pada file tersebut. internal style adalah css yang disatukan pada .html. internal css biasanya ada di head dan biasa ada tanda {style} {} adalah <>. lalu prioritas terakhir ada browser default. ketika page tidak menggunakan css, maka browser akan mengeset otomatis sesuai pada default menurut masing masing browser.
 
+**Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!**
+- web yang design penting karena dapat menjamin user experience yang lebih baik. web yang responsive dapat menampilkan keseluruhan web mau di device apapun user gunakan sehingga user bisa berinteraksi dan menavigasi pada web dengan mudah. bayangkan jika web tidak responsive sehingga user harus mencari - cari tombol yang ingin dipakai maka pengalaman user menggunakan web kita akan jelek. Selain itu, web yang responsive juga secara tidak langsung membuat web lebih efisiensi baik secara tenaga maupun biaya. bayangin kalo untuk setiap device kita harus buat design yang berbeda-beda, maka tidak efisien dan juga susah untuk di maintain.
+
+**Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!**
+- margin adalah ruang yang berada disekitar elemen html. margin ada di luar elemen. lalu border adalah ruang yang mengelilingi elemen. border ada pada antara margin dan juga padding. Yang terakhir ada padding. padding ada di dalam border. detailnya ada di antara isi konten dan juga border.
+untuk lebih jelas, gambar berikut akan membuat visualisasi mengenai ketiga unsur ini menjadi lebih mudah:
+![box-model](image-6.png)
+
+untuk mengimplementasikannya, biasanya kita set di css. dengan kode berikut:
+`padding: 20px;`untuk padding, `border: 5px;` untuk border, dan `margin: 30px;` untuk margin
+
+**Jelaskan konsep flex box dan grid layout beserta kegunaannya!**
+- intinya, bayangkan flex box sebagai tumpukan box searah (bisa di horizontal atau vertikal) dan grid layout sebagai koordinat kartesius. flex box bekerja dengan menaruh objek di samping objek sebelumnya sedangkan grid layout bekerja dengan menaruh suatu objek di suatu titik. artinya grid layout hanya bisa ditaruh secara linear sedangkan grid lebih bebas (bisa menyamping).
+kegunaannya flexbox ada pada saat kita ingin membuat navbar yang biasanya tiap tombol ke section tertentu biasanya menyamping. sedangkan grid layout ketika ingin membuat dashboard yang terdiri dari banyak panel berbeda ukuran.
+
+**Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!**
+-  Implementasikan fungsi untuk menghapus dan mengedit product
+1) pertama kita ke views.py dan membuat fungsi delete_product yang menerima parameter request dan id. lalu kita coba ambil product menggunakan `get_object_or_404`. lalu ketika sudah dapat, kita gunakan .delete untuk menghapus objeknya dan redirect ke home page (show:main)
+2) buka urls.py lalu import delete_product. lalu kita set juga path nya ke `news/<uuid:id>/delete`. jadi ketika user mengetikan url ini, urls.py akan menjalankan fungsi delete_product
+
+- Kustomisasi halaman login, register, tambah product, edit product, dan detail product semenarik mungkin.
+1) pertama saya memilih warna yang akan menjadikan identitas dari app saya. saya memilih warna orange dan putih karena melambangkan success dan juga simplicity.
+2) lalu akan dicek apakah product ada dengan melakukan for loop terhadap semua produk yang sudah disimpan. jika tidak ada maka akan menampilkan image no-product dan juga pesan bahwa produk belum ada. sedangkan jika sudah ada akan melakukan for loop lalu memanggil card_product.html
+
+- Untuk setiap card product, buatlah dua buah button untuk mengedit dan menghapus product pada card tersebut!
+1) lalu pada card, saya juga mengubah isi dari card seperti menambah rating, harga barang, total dibeli, dan status apakah sedang di featured atau sedang hot.
+2) sebagai web jual beli barang, tentu saya perlu mengimplementasikan diskon, maka saya menambahkan beberapa fungsi pada models.py dan juga menambahkan atribut sale. dimana ketika sale >0, maka akan menampilkan harga lama yang dicoret dan menampilkan harga baru yang diberi warna merah dan juga box yang menunjukan diskon berapa persen
+3) terakhir saya membuat tombol readmore yang akan menredirect ke halaman detail product, tombol delete dan edit untuk menredirect ke halaman edit atau delete. perlu dicek juga apakah user adalah user yang membuat product tersebut karena tombol edit dan delete akan bekerja jika dan hanya jika pembuat produk tersebut.
+
+- Buatlah navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop.
+1) ketika user membuka web, biasanya ada hidden embed yang menunjukan pada device apakah user sedang membuka website. nah hidden embed ini yang akan kita pakai untuk mendefine ukuran dari navbar.
+2) lalu kita buat html nya dan kita akan pakai flexbox karena saya ingin membuat navbar yang tombol tombolnya linear.

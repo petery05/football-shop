@@ -22,7 +22,7 @@
             <!-- Header -->
             <div class="p-6 sm:p-8">
                 <div class="flex flex-wrap items-center gap-2 mb-4">
-                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-green-600 text-white">
+                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-orange-400 text-white">
                         {{ product.get_category_display }}
                     </span>
                     {% if product.is_featured %}
@@ -73,12 +73,12 @@
                     <div>
                         <div class="font-medium text-gray-900">
                             {% if product.user %}
-                                <p>Seller: {{ product.user.username }}</p>
+                                <p>Brand: {{ product.user.username }}</p>
                             {% else %}
-                                <p>Seller: Anonymous</p>
+                                <p>Brand: Unknown</p>
                             {% endif %}
                         </div>
-                        <p class="text-sm text-gray-500">Seller</p>
+                        <p class="text-sm text-gray-500">Brand</p>
                     </div>
                 </div>
             </div>
