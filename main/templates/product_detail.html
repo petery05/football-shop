@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block meta %}
-<title>{{ product.name }} - We Ball Shop</title>
+<title>Product Detail - Football Product</title>
 {% endblock meta %}
 
 {% block content %}
@@ -12,77 +12,215 @@
         <!-- Back Navigation -->
         <div class="mb-6">
             <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                ← Back to Home
+                ← Back to Product
             </a>
         </div>
         
-        <!-- Article -->
-        <article class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <!-- Loading State -->
+        <div id="loading-state" class="bg-white rounded-lg border border-gray-200 p-12 text-center">
+            <svg class="animate-spin h-8 w-8 text-orange-400 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            <p class="text-gray-600 mt-3">Loading product detail...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="bg-white rounded-lg border border-gray-200 p-12 text-center hidden">
+            <div class="w-16 h-16 mx-auto mb-4">
+                <div class="text-red-500 text-5xl">⚠️</div>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Failed to load product</h3>
+            <p class="text-gray-500">Please try again later.</p>
+        </div>
+        
+        <article id="article-content" class="bg-white rounded-lg border border-gray-200 overflow-hidden hidden">
+    
+    <div class="p-6 sm:p-8 border-b border-gray-200">
+        <div id="badges-container" class="flex flex-wrap items-center gap-2 mb-4">
+            </div>
+        <h1 id="article-name" class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">
+            </h1>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-8 p-6 sm:p-8">
+        
+        <div id="featured-image-container" class="md:w-1/2 flex-shrink-0">
+            <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                <img id="featured-image" src="" alt="" class="w-full h-full object-cover">
+            </div>
+        </div>
+
+        <div class="md:w-1/2 flex flex-col space-y-6">
             
-            <!-- Header -->
-            <div class="p-6 sm:p-8">
-                <div class="flex flex-wrap items-center gap-2 mb-4">
-                    <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-orange-400 text-white">
-                        {{ product.get_category_display }}
-                    </span>
-                    {% if product.is_featured %}
-                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800">
-                            Featured
-                        </span>
-                    {% endif %}
-                    {% if product.is_product_hot %}
-                        <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800">
-                            Hot
-                        </span>
-                    {% endif %}
+            <div id="price-container" class="border-b pb-6">
                 </div>
-                
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
-                    {{ product.name }}
-                </h1>
-                
-                <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
-                    <time datetime="{{ product.created_at|date:'c' }}">
-                        {{ product.created_at|date:"M j, Y g:i A" }}
-                    </time>
-                    <span>{{ product.total_purcased }} Purcased</span>
-                </div>
-            </div>
-
-            <!-- Featured Image -->
-            {% if product.thumbnail %}
-                <div class="px-6 sm:px-8">
-                    <img src="{{ product.thumbnail }}" 
-                        alt="{{ product.name }}" 
-                        class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
-                </div>
-            {% endif %}
-
-            <!-- Content -->
-            <div class="p-6 sm:p-8">
-                <div class="prose prose-lg max-w-none">
-                    <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
-                        {{ product.description }}
+            
+            <div class="text-sm text-gray-700 space-y-3">
+                <div id="rating-container" class="flex items-center gap-2">
                     </div>
-                </div>
+                <div id="purchased-container" class="flex items-center gap-2">
+                    </div>
+                <div id="brand-container" class="flex items-center gap-2">
+                    </div>
             </div>
 
-            <!-- Author Info -->
-            <div class="border-t border-gray-200 p-6 sm:p-8 bg-gray-50">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <div class="font-medium text-gray-900">
-                            {% if product.user %}
-                                <p>Brand: {{ product.user.username }}</p>
-                            {% else %}
-                                <p>Brand: Unknown</p>
-                            {% endif %}
-                        </div>
-                        <p class="text-sm text-gray-500">Brand</p>
-                    </div>
-                </div>
+            <div id="actions-container" class="pt-6 space-y-3 sm:space-y-0 sm:flex sm:gap-4">
+                <button id="buy-button" class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-orange-500 hover:bg-orange-600 transition-colors">
+                    Beli Sekarang
+                </button>
+                <button id="add-to-cart-button" class="w-full inline-flex items-center justify-center px-6 py-3 border border-orange-400 rounded-md shadow-sm text-base font-medium text-orange-500 bg-white hover:bg-orange-50 transition-colors">
+                    + Tambah ke Keranjang
+                </button>
             </div>
-        </article>
+        </div>
+    </div>
+
+    <div class="p-6 sm:p-8 border-t">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">Deskripsi Produk</h2>
+        <div id="article-description-text" class="text-gray-700 leading-relaxed whitespace-pre-line">
+            </div>
+    </div>
+
+</article>
     </div>
 </div>
+
+
+
+
+
+<script>
+// Configuration
+const PRODUCT_ID = "{{ product.id }}";
+const PRODUCT_DETAIL_ENDPOINT = `{% url 'main:show_json_by_id' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', PRODUCT_ID);
+
+// DOM Elements
+const loadingState = document.getElementById('loading-state');
+const errorState = document.getElementById('error-state');
+const articleContent = document.getElementById('article-description');
+
+const badgesContainer = document.getElementById('badges-container');
+const articleName = document.getElementById('article-name');
+const featuredImageContainer = document.getElementById('featured-image-container');
+const featuredImage = document.getElementById('featured-image');
+const priceContainer = document.getElementById('price-container');
+const ratingContainer = document.getElementById('rating-container');
+const purchasedContainer = document.getElementById('purchased-container');
+const brandContainer = document.getElementById('brand-container');
+const articleContentText = document.getElementById('article-description-text');
+const buyButton = document.getElementById('buy-button');
+const addToCartButton = document.getElementById('add-to-cart-button');
+
+
+
+// Show/hide page sections
+function showState(state) {
+    loadingState.classList.toggle('hidden', state !== 'loading');
+    errorState.classList.toggle('hidden', state !== 'error');
+    articleContent.classList.toggle('hidden', state !== 'ready');
+}
+
+// Get readable category name
+function getCategoryLabel(categoryCode) {
+    const categoryMapping = {
+        bag: 'BAG',
+        jersey: 'JERSEY',
+        exclusive: 'Exclusive',
+        boots: 'Boots',
+        accessories: 'Accessories',
+        hoodie: 'Hoodie',
+    };
+    return categoryMapping[categoryCode] || categoryCode;
+}
+
+// Render article description
+function renderArticle(product) {
+    // Set name
+    articleName.textContent = product.name;
+    document.title = `${product.name} - We Ball Shop`;
+    
+    // Set badges
+    badgesContainer.innerHTML = '';
+    
+    const price = Number(product.price) || 0;
+    const sale = Number(product.sale) || 0;
+    let priceHtml = '';
+    if (sale > 0) {
+        const finalPrice = price - (price * (sale / 100));
+        priceHtml = `
+            <div class="flex items-center gap-3">
+                <span class="text-3xl font-bold text-red-500">Rp ${new Intl.NumberFormat('id-ID').format(finalPrice)}</span>
+                <span class="text-lg text-gray-400 line-through">Rp ${new Intl.NumberFormat('id-ID').format(price)}</span>
+            </div>
+            <div class="mt-2">
+                <span class="px-2 py-1 bg-red-100 text-red-600 text-xs font-medium rounded">${sale}% OFF</span>
+            </div>
+        `;
+    } else {
+        priceHtml = `<div class="text-3xl font-bold text-gray-900">Rp ${new Intl.NumberFormat('id-ID').format(price)}</div>`;
+    }
+    priceContainer.innerHTML = priceHtml;
+
+    // --- 2. Render Rating ---
+    const ratingValue = Number(product.rating) || 0;
+    ratingContainer.innerHTML = `
+        <span class="text-yellow-400">★★★★★</span>
+        <span class="font-bold text-gray-900">${ratingValue.toFixed(1)}</span>
+        <span class="text-gray-500">(Rating)</span>`;
+
+    // --- 3. Render Total Pembelian ---
+    const totalPurchased = Number(product.total_purcased) || 0;
+    purchasedContainer.innerHTML = `
+        <span class="font-bold text-gray-900">${totalPurchased}</span>
+        <span class="text-gray-500">unit terjual</span>`;
+
+    // --- Render Brand ---
+    brandContainer.innerHTML = `
+        <span class="text-gray-500">Brand:</span>
+        <span class="font-bold text-gray-900">${product.brand || 'N/A'}</span>`;
+
+    // Render Gambar
+    if (product.thumbnail) {
+        featuredImage.src = product.thumbnail;
+        featuredImage.alt = product.name;
+        featuredImageContainer.classList.remove('hidden');
+    } else {
+        featuredImageContainer.classList.add('hidden');
+    }
+    
+    // Render Deskripsi
+    articleContentText.textContent = product.description;
+}
+
+// --- 4. Fungsi untuk Aksi Tombol Beli ---
+
+
+// Fetch product detail
+async function loadProductDetail() {
+    try {
+        showState('loading');
+        
+        const response = await fetch(PRODUCT_DETAIL_ENDPOINT, {
+            headers: { 'Accept': 'application/json' },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch product detail');
+        }
+
+        const productData = await response.json();
+        renderArticle(productData);
+        showState('ready');
+    } catch (error) {
+        console.error('Error loading product detail:', error);
+        showState('error');
+    }
+}
+
+// Initialize page
+loadProductDetail();
+</script>
+
+
 {% endblock content %}

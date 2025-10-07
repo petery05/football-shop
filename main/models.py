@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 class Product(models.Model):
     CATEGORY_CHOICES = [
-        ('bag', 'BAG'),
-        ('jersey', 'JERSEY'),
+        ('bag', 'Bag'),
+        ('jersey', 'Jersey'),
         ('exclusive', 'Exclusive'),
         ('boots', 'Boots'),
         ('accessories', 'Accessories'),
