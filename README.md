@@ -276,3 +276,20 @@ kegunaannya flexbox ada pada saat kita ingin membuat navbar yang biasanya tiap t
 1) ketika user membuka web, biasanya ada hidden embed yang menunjukan pada device apakah user sedang membuka website. nah hidden embed ini yang akan kita pakai untuk mendefine ukuran dari navbar.
 2) lalu kita buat html nya dan kita akan pakai flexbox karena saya ingin membuat navbar yang tombol tombolnya linear.
 3) lalu dengan html, kita akan buat elemen-elemen tombolnya yang akan menredirect ke page tujuan. tombol yang saya buat adalah home page (tempat semua produk ditampilkan) dan juga create product yang akan menredirect ke page add product. disamping itu, saya membuat search bar yang masih belum bisa digunakan. namun kedepannya saya ingin menerapkan fitur search yagn akan menampilkan barang barang yang memiliki nama sama atau brand sama 
+
+# **TUGAS INDIVIDU 6**
+**Apa perbedaan antara synchronous request dan asynchronous request?**
+- Synchronous request harus menunggu hasilnya dulu baru bisa lanjut ke instruksi selanjutnya sedangkan asynchronous langsung dilakukan tanpa perlu menunggu hasilnya. konsep simpelnya adalah pipeline dalam POK. 
+
+**Bagaimana AJAX bekerja di Django (alur request–response)?**
+- ketika user mengirim request, AJAX akan mengirim request tersebut secara asynchronous dari browser tanpa page reload. contoh: misal user mengeklik suatu tombol. lalu AJAX mengirim requestnya dan akan diproses pada django url dan view dalam server. lalu server mengirim data berupa jsonresponse. lalu akan diterima oleh javascript. karena script dalam javascript, maka bisa langsung update tampilan DOM
+
+**Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?**
+- user experience pasti meningkat karena web lebih cepat dan smooth. selain itu, ajax lebih efisien karena tinggal ganti data aja bukan bikin ulang html css. Website juga jadi lebih interaktif. 
+
+**Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?**
+- dengan DOMPURIFY, kita bisa membersihkan html yang diinput user jadi program bisa menghindari penyuntikan kode javascript ke app kita. selain itu, menggunakan strip_tags juga dapat membantu app kita terlindungi dari semua tag html berbahaya. dengan cara meng-add ke forms dan juga views ketika ingin membuat product baru
+
+
+**Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?**
+- karena web tidak perlu reload-reload terus terusan ketika user mengirim request, maka user dapat merasakan pengalaman menggunakan app lebih baik. selain itu untuk app yang besar juga akan lebih efisien sehingga menjadi lebih cepat dan juga membutuhkan internet yang lebih sedikit.

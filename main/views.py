@@ -132,6 +132,7 @@ def login_user(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            messages.success(request, f'Welcome back, {user.username}!')
             return redirect('main:show_main')
 
     else:
@@ -142,6 +143,8 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     response = HttpResponseRedirect(reverse('main:login'))
+    user = request.user
+    messages.success(request, f'See u later, {user.username}!')
     response.delete_cookie('last_login')
     return response
 
